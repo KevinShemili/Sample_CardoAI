@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain.Common {
-    internal class BaseEntity {
+    public class BaseEntity {
     }
 }

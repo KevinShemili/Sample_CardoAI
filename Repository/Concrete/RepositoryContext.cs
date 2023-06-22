@@ -12,5 +12,10 @@ namespace Repository.Concrete {
         }
 
         public DbSet<Loan> Loans { get; set; }
+        public DbSet<Lender> Lenders { get; set; }
+        public DbSet<LenderType> LenderTypes { get; set; }
+        public DbSet<LenderTypeLocalization> LenderTypeLocalizations { get; set; }
+        public DbSet<LoanStatus> LoanStatuses { get; set; }
+        public DbSet<LoanStatusLocalization> LoanStatusLocalizations { get; set; }
     }
 }

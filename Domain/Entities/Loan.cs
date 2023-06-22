@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain.Entities {
-    public class Loan {
+    public class Loan : BaseEntity {
         [Key]
         [Column("Id")]
         public required int Id { get; set; }
