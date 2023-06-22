@@ -43,5 +43,11 @@ namespace Domain.Entities {
 
         [Column("FundManagerId")]
         public int? FundManagerId { get; set; }
+
+        public virtual ICollection<Loan> Loans { get; set; }
+        
+        [ForeignKey("LenderTypeId")]
+        public virtual LenderType LenderType { get; set; }
+
     }
 }

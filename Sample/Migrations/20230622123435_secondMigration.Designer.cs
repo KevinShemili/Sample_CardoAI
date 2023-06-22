@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository.Concrete;
 
@@ -11,9 +12,11 @@ using Repository.Concrete;
 namespace Sample.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20230622123435_secondMigration")]
+    partial class secondMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,6 +121,9 @@ namespace Sample.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("IsDeleted");
 
+                    b.Property<int>("LenderTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -125,6 +131,8 @@ namespace Sample.Migrations
                         .HasColumnName("Name");
 
                     b.HasKey("Id", "CultureId");
+
+                    b.HasIndex("LenderTypeId");
 
                     b.ToTable("LenderTypeLocalizations");
                 });
@@ -315,10 +323,16 @@ namespace Sample.Migrations
 
             modelBuilder.Entity("Domain.Entities.LenderTypeLocalization", b =>
                 {
-                    b.HasOne("Domain.Entities.LenderType", "LenderType")
+                    b.HasOne("Domain.Entities.LenderType", null)
                         .WithMany("LenderTypeLocalizations")
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.LenderType", "LenderType")
+                        .WithMany()
+                        .HasForeignKey("LenderTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LenderType");

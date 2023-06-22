@@ -5,7 +5,7 @@
 namespace Sample.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedTables : Migration
+    public partial class secondMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

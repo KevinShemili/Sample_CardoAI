@@ -12,8 +12,8 @@ using Repository.Concrete;
 namespace Sample.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230622075156_AddedTabl")]
-    partial class AddedTabl
+    [Migration("20230622123105_firstMigration")]
+    partial class firstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,6 +71,8 @@ namespace Sample.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LenderTypeId");
+
                     b.ToTable("Lenders");
                 });
 
@@ -108,11 +110,8 @@ namespace Sample.Migrations
             modelBuilder.Entity("Domain.Entities.LenderTypeLocalization", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CultureId")
                         .HasColumnType("int")
@@ -122,13 +121,18 @@ namespace Sample.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("IsDeleted");
 
+                    b.Property<int>("LenderTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("Name");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id", "CultureId");
+
+                    b.HasIndex("LenderTypeId");
 
                     b.ToTable("LenderTypeLocalizations");
                 });
@@ -228,6 +232,8 @@ namespace Sample.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LenderId");
+
                     b.ToTable("Loans");
                 });
 
@@ -269,11 +275,8 @@ namespace Sample.Migrations
             modelBuilder.Entity("Domain.Entities.LoanStatusLocalization", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CultureId")
                         .HasColumnType("int")
@@ -287,6 +290,9 @@ namespace Sample.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("IsDeleted");
 
+                    b.Property<int>("LoanStatusId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -297,9 +303,84 @@ namespace Sample.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("TenantId");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id", "CultureId");
+
+                    b.HasIndex("LoanStatusId");
 
                     b.ToTable("LoanStatusLocalizations");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Lender", b =>
+                {
+                    b.HasOne("Domain.Entities.LenderType", "LenderType")
+                        .WithMany("Lenders")
+                        .HasForeignKey("LenderTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LenderType");
+                });
+
+            modelBuilder.Entity("Domain.Entities.LenderTypeLocalization", b =>
+                {
+                    b.HasOne("Domain.Entities.LenderType", null)
+                        .WithMany("LenderTypeLocalizations")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.LenderType", "LenderType")
+                        .WithMany()
+                        .HasForeignKey("LenderTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LenderType");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Loan", b =>
+                {
+                    b.HasOne("Domain.Entities.Lender", "Lender")
+                        .WithMany("Loans")
+                        .HasForeignKey("LenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lender");
+                });
+
+            modelBuilder.Entity("Domain.Entities.LoanStatusLocalization", b =>
+                {
+                    b.HasOne("Domain.Entities.LoanStatus", null)
+                        .WithMany("LoanStatusLocalizations")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.LoanStatus", "LoanStatus")
+                        .WithMany()
+                        .HasForeignKey("LoanStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LoanStatus");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Lender", b =>
+                {
+                    b.Navigation("Loans");
+                });
+
+            modelBuilder.Entity("Domain.Entities.LenderType", b =>
+                {
+                    b.Navigation("LenderTypeLocalizations");
+
+                    b.Navigation("Lenders");
+                });
+
+            modelBuilder.Entity("Domain.Entities.LoanStatus", b =>
+                {
+                    b.Navigation("LoanStatusLocalizations");
                 });
 #pragma warning restore 612, 618
         }

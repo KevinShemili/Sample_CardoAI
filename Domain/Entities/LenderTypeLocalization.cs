@@ -11,6 +11,10 @@ namespace Domain.Entities {
     public class LenderTypeLocalization : BaseEntity {
 
         [Key]
+        [Required]
+        [Column("LocalizationId")]
+        public required Guid LocalizationId { get; set; }
+
         [Column("Id")]
         public required int Id { get; set; }
 
@@ -25,5 +29,7 @@ namespace Domain.Entities {
         [StringLength(500)]
         [Required]
         public required string Name { get; set; }
+
+        public virtual LenderType LenderType { get; set; }
     }
 }

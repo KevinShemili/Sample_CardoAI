@@ -8,9 +8,12 @@ using System.Threading.Tasks;
 using Domain.Common;
 
 namespace Domain.Entities {
-    public class LoanStatusLocalization : BaseEntity {
 
-        [Key]
+
+    public class LoanStatusLocalization : BaseEntity {
+        
+        // composite primary key Id & CultureId
+
         [Column("Id")]
         public required int Id { get; set; }
 
@@ -33,5 +36,7 @@ namespace Domain.Entities {
         [Column("TenantId")]
         [Required]
         public required Guid TenantId { get; set; }
+
+        public virtual LoanStatus LoanStatus { get; set; }
     }
 }

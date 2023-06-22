@@ -89,5 +89,9 @@ namespace Domain.Entities {
         [Required]
         public required DateTime DateCreated { get; set; }
 
+        [ForeignKey("LenderId")]
+        public virtual Lender Lender { get; set; }
+
+
     }
 }

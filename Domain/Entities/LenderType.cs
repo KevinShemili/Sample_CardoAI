@@ -27,5 +27,9 @@ namespace Domain.Entities {
 
         [Column("IsPredefined")]
         public required bool IsPredefined { get; set; }
+
+        public virtual ICollection<Lender> Lenders { get; set; }
+
+        public virtual ICollection<LenderTypeLocalization> LenderTypeLocalizations { get; set; }
     }
 }

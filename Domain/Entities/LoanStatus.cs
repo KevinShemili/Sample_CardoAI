@@ -31,5 +31,8 @@ namespace Domain.Entities {
 
         [Column("IsPredefined")]
         public required bool IsPredefined { get; set; }
+
+        public virtual ICollection<LoanStatusLocalization> LoanStatusLocalizations { get; set; }
+
     }
 }
