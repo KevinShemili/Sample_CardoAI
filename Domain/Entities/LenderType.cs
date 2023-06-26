@@ -28,8 +28,12 @@ namespace Domain.Entities {
         [Column("IsPredefined")]
         public required bool IsPredefined { get; set; }
 
+        [Column("LocalizationId")]
+        public int LocalizationId { get; set; }
+
         public virtual ICollection<Lender> Lenders { get; set; }
 
+        [ForeignKey("LocalizationId")]
         public virtual ICollection<LenderTypeLocalization> LenderTypeLocalizations { get; set; }
     }
 }

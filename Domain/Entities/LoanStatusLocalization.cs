@@ -11,8 +11,11 @@ namespace Domain.Entities {
 
 
     public class LoanStatusLocalization : BaseEntity {
-        
-        // composite primary key Id & CultureId
+
+        [Key]
+        [Required]
+        [Column("LocalizationId")]
+        public required int LocalizationId { get; set; }
 
         [Column("Id")]
         public required int Id { get; set; }

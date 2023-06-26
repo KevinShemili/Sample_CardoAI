@@ -13,7 +13,7 @@ namespace Domain.Entities {
         [Key]
         [Required]
         [Column("LocalizationId")]
-        public required Guid LocalizationId { get; set; }
+        public required int LocalizationId { get; set; }
 
         [Column("Id")]
         public required int Id { get; set; }

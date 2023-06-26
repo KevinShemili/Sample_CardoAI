@@ -99,6 +99,10 @@ namespace Sample.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("IsPredefined");
 
+                    b.Property<int>("LocalizationId")
+                        .HasColumnType("int")
+                        .HasColumnName("LocalizationId");
+
                     b.HasKey("Id");
 
                     b.ToTable("LenderTypes");
@@ -106,13 +110,17 @@ namespace Sample.Migrations
 
             modelBuilder.Entity("Domain.Entities.LenderTypeLocalization", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("LocalizationId")
                         .HasColumnType("int")
-                        .HasColumnName("Id");
+                        .HasColumnName("LocalizationId");
 
                     b.Property<int>("CultureId")
                         .HasColumnType("int")
                         .HasColumnName("CultureId");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
@@ -124,7 +132,7 @@ namespace Sample.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("Name");
 
-                    b.HasKey("Id", "CultureId");
+                    b.HasKey("LocalizationId");
 
                     b.ToTable("LenderTypeLocalizations");
                 });
@@ -186,9 +194,9 @@ namespace Sample.Migrations
                         .HasColumnType("int")
                         .HasColumnName("LenderId");
 
-                    b.Property<int>("LoadStatusId")
+                    b.Property<int>("LoanStatusId")
                         .HasColumnType("int")
-                        .HasColumnName("LoadStatusId");
+                        .HasColumnName("LoanStatusId");
 
                     b.Property<decimal>("OutstandingAmount")
                         .HasColumnType("decimal(18, 2)")
@@ -226,6 +234,9 @@ namespace Sample.Migrations
 
                     b.HasIndex("LenderId");
 
+                    b.HasIndex("LoanStatusId")
+                        .IsUnique();
+
                     b.ToTable("Loans");
                 });
 
@@ -255,6 +266,10 @@ namespace Sample.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("IsPredefined");
 
+                    b.Property<int>("LocalizationId")
+                        .HasColumnType("int")
+                        .HasColumnName("LocalizationId");
+
                     b.Property<Guid>("TenantId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("TenantId");
@@ -266,9 +281,9 @@ namespace Sample.Migrations
 
             modelBuilder.Entity("Domain.Entities.LoanStatusLocalization", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("LocalizationId")
                         .HasColumnType("int")
-                        .HasColumnName("Id");
+                        .HasColumnName("LocalizationId");
 
                     b.Property<int>("CultureId")
                         .HasColumnType("int")
@@ -278,12 +293,13 @@ namespace Sample.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Description");
 
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit")
                         .HasColumnName("IsDeleted");
-
-                    b.Property<int>("LoanStatusId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -295,9 +311,7 @@ namespace Sample.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("TenantId");
 
-                    b.HasKey("Id", "CultureId");
-
-                    b.HasIndex("LoanStatusId");
+                    b.HasKey("LocalizationId");
 
                     b.ToTable("LoanStatusLocalizations");
                 });
@@ -317,8 +331,8 @@ namespace Sample.Migrations
                 {
                     b.HasOne("Domain.Entities.LenderType", "LenderType")
                         .WithMany("LenderTypeLocalizations")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("LocalizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LenderType");
@@ -332,20 +346,22 @@ namespace Sample.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.LoanStatus", "LoanStatus")
+                        .WithOne("Loan")
+                        .HasForeignKey("Domain.Entities.Loan", "LoanStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Lender");
+
+                    b.Navigation("LoanStatus");
                 });
 
             modelBuilder.Entity("Domain.Entities.LoanStatusLocalization", b =>
                 {
-                    b.HasOne("Domain.Entities.LoanStatus", null)
-                        .WithMany("LoanStatusLocalizations")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.LoanStatus", "LoanStatus")
-                        .WithMany()
-                        .HasForeignKey("LoanStatusId")
+                        .WithMany("LoanStatusLocalizations")
+                        .HasForeignKey("LocalizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -366,6 +382,9 @@ namespace Sample.Migrations
 
             modelBuilder.Entity("Domain.Entities.LoanStatus", b =>
                 {
+                    b.Navigation("Loan")
+                        .IsRequired();
+
                     b.Navigation("LoanStatusLocalizations");
                 });
 #pragma warning restore 612, 618

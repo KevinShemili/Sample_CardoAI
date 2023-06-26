@@ -19,17 +19,6 @@ namespace Repository.Concrete {
         public DbSet<LoanStatusLocalization> LoanStatusLocalizations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            modelBuilder.Entity<LenderTypeLocalization>()
-                .HasKey(l => new { l.Id, l.CultureId }); // Composite primary key
-
-            modelBuilder.Entity<LenderType>()
-                .HasMany(lt => lt.LenderTypeLocalizations) // One-to-many relationship
-                .WithOne(ltl => ltl.LenderType) // Inverse navigation property
-                .HasPrincipalKey(ltl => new { ltl.Id, ltl.cul }) // Composite foreign key
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<LoanStatusLocalization>()
-                .HasKey(l => new { l.Id, l.CultureId }); // Composite primary key
         }
     }
 }

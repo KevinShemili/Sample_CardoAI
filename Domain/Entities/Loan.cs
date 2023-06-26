@@ -48,9 +48,9 @@ namespace Domain.Entities {
         [Required]
         public required int LenderId { get; set; }
 
-        [Column("LoadStatusId")]
+        [Column("LoanStatusId")]
         [Required]
-        public required int LoadStatusId { get; set; }
+        public required int LoanStatusId { get; set; }
 
         [Column("FDGGuaranteeId")]
         public int? FDGGuaranteeId { get; set; }
@@ -92,6 +92,8 @@ namespace Domain.Entities {
         [ForeignKey("LenderId")]
         public virtual Lender Lender { get; set; }
 
+        [ForeignKey("LoanStatusId")]
+        public virtual LoanStatus LoanStatus { get; set; }
 
     }
 }

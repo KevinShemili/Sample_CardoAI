@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Sample.Migrations
 {
     /// <inheritdoc />
-    public partial class firstMigration : Migration
+    public partial class migration1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,8 @@ namespace Sample.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2(7)", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2(7)", nullable: false),
-                    IsPredefined = table.Column<bool>(type: "bit", nullable: false)
+                    IsPredefined = table.Column<bool>(type: "bit", nullable: false),
+                    LocalizationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,7 +38,8 @@ namespace Sample.Migrations
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2(7)", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "datetime2(7)", nullable: false),
-                    IsPredefined = table.Column<bool>(type: "bit", nullable: false)
+                    IsPredefined = table.Column<bool>(type: "bit", nullable: false),
+                    LocalizationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,23 +76,18 @@ namespace Sample.Migrations
                 name: "LenderTypeLocalizations",
                 columns: table => new
                 {
+                    LocalizationId = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
                     CultureId = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    LenderTypeId = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LenderTypeLocalizations", x => new { x.Id, x.CultureId });
+                    table.PrimaryKey("PK_LenderTypeLocalizations", x => x.LocalizationId);
                     table.ForeignKey(
-                        name: "FK_LenderTypeLocalizations_LenderTypes_Id",
-                        column: x => x.Id,
-                        principalTable: "LenderTypes",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_LenderTypeLocalizations_LenderTypes_LenderTypeId",
-                        column: x => x.LenderTypeId,
+                        name: "FK_LenderTypeLocalizations_LenderTypes_LocalizationId",
+                        column: x => x.LocalizationId,
                         principalTable: "LenderTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -100,25 +97,20 @@ namespace Sample.Migrations
                 name: "LoanStatusLocalizations",
                 columns: table => new
                 {
+                    LocalizationId = table.Column<int>(type: "int", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false),
                     CultureId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoanStatusId = table.Column<int>(type: "int", nullable: false)
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LoanStatusLocalizations", x => new { x.Id, x.CultureId });
+                    table.PrimaryKey("PK_LoanStatusLocalizations", x => x.LocalizationId);
                     table.ForeignKey(
-                        name: "FK_LoanStatusLocalizations_LoanStatuses_Id",
-                        column: x => x.Id,
-                        principalTable: "LoanStatuses",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_LoanStatusLocalizations_LoanStatuses_LoanStatusId",
-                        column: x => x.LoanStatusId,
+                        name: "FK_LoanStatusLocalizations_LoanStatuses_LocalizationId",
+                        column: x => x.LocalizationId,
                         principalTable: "LoanStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -139,7 +131,7 @@ namespace Sample.Migrations
                     BrokerageFee = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     APR = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     LenderId = table.Column<int>(type: "int", nullable: false),
-                    LoadStatusId = table.Column<int>(type: "int", nullable: false),
+                    LoanStatusId = table.Column<int>(type: "int", nullable: false),
                     FDGGuaranteeId = table.Column<int>(type: "int", nullable: true),
                     StatusChangingTime = table.Column<DateTime>(type: "datetime2(7)", nullable: false),
                     StatusUpdateUserId = table.Column<int>(type: "int", nullable: true),
@@ -161,6 +153,12 @@ namespace Sample.Migrations
                         principalTable: "Lenders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Loans_LoanStatuses_LoanStatusId",
+                        column: x => x.LoanStatusId,
+                        principalTable: "LoanStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -169,19 +167,15 @@ namespace Sample.Migrations
                 column: "LenderTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LenderTypeLocalizations_LenderTypeId",
-                table: "LenderTypeLocalizations",
-                column: "LenderTypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Loans_LenderId",
                 table: "Loans",
                 column: "LenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LoanStatusLocalizations_LoanStatusId",
-                table: "LoanStatusLocalizations",
-                column: "LoanStatusId");
+                name: "IX_Loans_LoanStatusId",
+                table: "Loans",
+                column: "LoanStatusId",
+                unique: true);
         }
 
         /// <inheritdoc />
