@@ -19,6 +19,11 @@ namespace Repository.Concrete {
         public DbSet<LoanStatusLocalization> LoanStatusLocalizations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            modelBuilder.Entity<LenderTypeLocalization>()
+           .HasKey(ltl => new { ltl.Id, ltl.CultureId });
+
+            modelBuilder.Entity<LoanStatusLocalization>()
+           .HasKey(lsl => new { lsl.Id, lsl.CultureId });
         }
     }
 }

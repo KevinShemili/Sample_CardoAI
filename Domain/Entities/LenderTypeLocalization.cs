@@ -10,11 +10,6 @@ using Domain.Common;
 namespace Domain.Entities {
     public class LenderTypeLocalization : BaseEntity {
 
-        [Key]
-        [Required]
-        [Column("LocalizationId")]
-        public required int LocalizationId { get; set; }
-
         [Column("Id")]
         public required int Id { get; set; }
 
@@ -30,6 +25,11 @@ namespace Domain.Entities {
         [Required]
         public required string Name { get; set; }
 
+        [Column("LenderTypeId")]
+        [Required]
+        public required int LenderTypeId { get; set; }
+
+        [ForeignKey("LenderTypeId")]
         public virtual LenderType LenderType { get; set; }
     }
 }

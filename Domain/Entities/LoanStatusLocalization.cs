@@ -12,11 +12,6 @@ namespace Domain.Entities {
 
     public class LoanStatusLocalization : BaseEntity {
 
-        [Key]
-        [Required]
-        [Column("LocalizationId")]
-        public required int LocalizationId { get; set; }
-
         [Column("Id")]
         public required int Id { get; set; }
 
@@ -40,6 +35,11 @@ namespace Domain.Entities {
         [Required]
         public required Guid TenantId { get; set; }
 
+        [Column("LoanStatusId")]
+        [Required]
+        public required int LoanStatusId { get; set; }
+
+        [ForeignKey("LoanStatusId")]
         public virtual LoanStatus LoanStatus { get; set; }
     }
 }
