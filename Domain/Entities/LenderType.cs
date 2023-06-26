@@ -26,10 +26,11 @@ namespace Domain.Entities {
         public DateTime? DateUpdated { get; set; }
 
         [Column("IsPredefined")]
+        [Required]        
         public required bool IsPredefined { get; set; }
 
-        public virtual ICollection<Lender> Lenders { get; set; }
+        public virtual ICollection<Lender>? Lenders { get; set; }
 
-        public virtual ICollection<LenderTypeLocalization> LenderTypeLocalizations { get; set; }
+        public virtual ICollection<LenderTypeLocalization>? LenderTypeLocalizations { get; set; }
     }
 }

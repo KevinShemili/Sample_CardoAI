@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Repository.Concrete {
-    public class LoanRepository : BaseRepository<Loan>, ILoanRepository {
-        public LoanRepository(RepositoryContext repositoryContext) : base(repositoryContext) {
+    public class LenderRepository : BaseRepository<Lender>, ILenderRepository {
+        public LenderRepository(RepositoryContext repositoryContext) : base(repositoryContext) {
         }
     }
 }

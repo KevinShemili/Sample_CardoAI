@@ -1,3 +1,5 @@
+using Application.Concrete;
+using Application.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Repository.Concrete;
 using Repository.Contracts;
@@ -14,8 +16,13 @@ builder.Services.AddSwaggerGen();
 var connString = builder.Configuration.GetConnectionString("MyConnection");
 builder.Services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(connString, b => b.MigrationsAssembly("Sample")));
 
-builder.Services.AddScoped<ILoanRepository, LoanRepository>();
+builder.Services.AddAutoMapper(typeof(Application.DomainTransferObjects.LenderTypeGetDTO));
+builder.Services.AddControllersWithViews();
 
+
+builder.Services.AddScoped<ILenderRepository, LenderRepository>();
+builder.Services.AddScoped<ILenderTypeRepository, LenderTypeRepository>();
+builder.Services.AddScoped<ILenderTypeService, LenderTypeService>();
 
 
 var app = builder.Build();

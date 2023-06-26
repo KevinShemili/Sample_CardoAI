@@ -24,8 +24,8 @@ namespace Repository.Concrete {
             throw new NotImplementedException();
         }
 
-        public ICollection<T> GetAll() {
-            throw new NotImplementedException();
+        public IEnumerable<T> GetAll() {
+            return repositoryContext.Set<T>().ToList();
         }
 
         public T GetById(int id) {

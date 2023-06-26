@@ -39,15 +39,15 @@ namespace Domain.Entities {
 
         [Column("CodiceSoggetoEnte")]
         [StringLength(50)]
-        public int? CodiceSoggetoEnte { get; set; }
+        public string? CodiceSoggetoEnte { get; set; }
 
         [Column("FundManagerId")]
         public int? FundManagerId { get; set; }
 
-        public virtual ICollection<Loan> Loans { get; set; }
+        public virtual ICollection<Loan>? Loans { get; set; }
         
         [ForeignKey("LenderTypeId")]
-        public virtual LenderType LenderType { get; set; }
+        public virtual LenderType? LenderType { get; set; }
 
     }
 }

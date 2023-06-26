@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Repository.Contracts {
-    public interface ILoanRepository : IBaseRepository<Loan> {
-
+    public interface ILenderTypeRepository : IBaseRepository<LenderType> {
     }
 }
