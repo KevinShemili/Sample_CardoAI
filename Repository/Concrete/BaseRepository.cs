@@ -20,8 +20,10 @@ namespace Repository.Concrete {
             repositoryContext.SaveChanges();
         }
 
-        public void Delete(T entity) {
-            throw new NotImplementedException();
+        public void Delete(int id) {
+            var toBeDeleted = GetById(id);
+            var entity = repositoryContext.Set<T>().Remove(toBeDeleted);
+            repositoryContext.SaveChanges();
         }
 
         public IEnumerable<T> GetAll() {
@@ -29,11 +31,16 @@ namespace Repository.Concrete {
         }
 
         public T GetById(int id) {
-            throw new NotImplementedException();
+            var entity = repositoryContext.Set<T>().Find(id);
+            if (entity == null) {
+                return null;
+            }
+            return entity;
         }
 
         public void Update(T entity) {
-            throw new NotImplementedException();
+            repositoryContext.Set<T>().Update(entity);
+            repositoryContext.SaveChanges();
         }
     }
 }

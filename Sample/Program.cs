@@ -16,14 +16,15 @@ builder.Services.AddSwaggerGen();
 var connString = builder.Configuration.GetConnectionString("MyConnection");
 builder.Services.AddDbContext<RepositoryContext>(options => options.UseSqlServer(connString, b => b.MigrationsAssembly("Sample")));
 
-builder.Services.AddAutoMapper(typeof(Application.DomainTransferObjects.LenderTypeGetDTO));
+builder.Services.AddAutoMapper(typeof(Application.DomainTransferObjects.LenderTypePostDTO));
 builder.Services.AddControllersWithViews();
 
 
 builder.Services.AddScoped<ILenderRepository, LenderRepository>();
 builder.Services.AddScoped<ILenderTypeRepository, LenderTypeRepository>();
 builder.Services.AddScoped<ILenderTypeService, LenderTypeService>();
-
+builder.Services.AddScoped<ILoanRepository, LoanRepository>();
+builder.Services.AddScoped<ILoanService, LoanService>();
 
 var app = builder.Build();
 

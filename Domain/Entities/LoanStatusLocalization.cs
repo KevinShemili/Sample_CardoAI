@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Domain.Common;
 
 namespace Domain.Entities {
-
-
     public class LoanStatusLocalization : BaseEntity {
 
         [Column("Id")]

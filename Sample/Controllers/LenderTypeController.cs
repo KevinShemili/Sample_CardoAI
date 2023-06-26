@@ -1,14 +1,14 @@
+using Application.Concrete;
 using Application.Contracts;
 using Application.DomainTransferObjects;
-using AutoMapper;
+using Application.DomainTransferObjects.LenderTypeDTOs;
 using Domain.Entities;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Repository.Contracts;
 
 namespace Sample.Controllers {
     [ApiController]
-    [Route("[controller]")]
+    [Route("lender-types")]
     public class LenderTypeController : ControllerBase {
 
         private readonly ILenderTypeService _lenderTypeService;
@@ -17,12 +17,55 @@ namespace Sample.Controllers {
             _lenderTypeService = lenderTypeService;
         }
 
-        [HttpPost("create-new-lender-type")]
-        public ActionResult<LenderType> CreateLenderType(LenderTypePostDTO lenderTypeDto) {
+        [HttpGet]
+        public ActionResult<LenderTypeGetDTO> GetAllLenders() {
+            try {
+                var lenderTypes = _lenderTypeService.GetAllLenderTypes();
+                return Ok(lenderTypes);
+            }
+            catch (NoLenderTypesFound exception) {
+                return NotFound(exception.Message);
+            }
+        }
 
-            var lenderTypes = _lenderTypeService.GetAllLenderTypes();
+        [HttpPost]
+        public ActionResult CreateLenderType([FromBody] LenderTypePostDTO lenderTypePostDTO) {
 
-            return Ok(lenderTypes);
+            _lenderTypeService.Create(lenderTypePostDTO);
+            return Ok();
+        }
+
+        [HttpPut]
+        public ActionResult UpdateLenderType([FromBody] LenderTypeUpdateDTO lenderTypeUpdateDTO) {
+            try {
+                _lenderTypeService.Update(lenderTypeUpdateDTO);
+                return Ok();
+            }
+            catch (LenderTypeNotFoundException exception) {
+                return NotFound(exception.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<LenderTypeGetDTO> GetLenderTypeById([FromRoute] int id) {
+            try {
+                var lenderType = _lenderTypeService.GetById(id);
+                return Ok(lenderType);
+            }
+            catch (LenderTypeNotFoundException exception) {
+                return NotFound(exception.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteLenderType([FromRoute] int id) {
+            try {
+                _lenderTypeService.Delete(id);
+                return Ok();
+            }
+            catch (LenderTypeNotFoundException exception) {
+                return NotFound(exception.Message);
+            }
         }
     }
 }
