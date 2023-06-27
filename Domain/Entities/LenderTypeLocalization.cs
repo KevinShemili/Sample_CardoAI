@@ -11,6 +11,7 @@ namespace Domain.Entities {
     public class LenderTypeLocalization : BaseEntity {
 
         [Column("Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public required int Id { get; set; }
 
         [Column("CultureId")]

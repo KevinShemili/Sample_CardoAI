@@ -21,10 +21,19 @@ builder.Services.AddControllersWithViews();
 
 
 builder.Services.AddScoped<ILenderRepository, LenderRepository>();
+builder.Services.AddScoped<ILenderService, LenderService>();
+
 builder.Services.AddScoped<ILenderTypeRepository, LenderTypeRepository>();
 builder.Services.AddScoped<ILenderTypeService, LenderTypeService>();
+
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddScoped<ILoanService, LoanService>();
+
+builder.Services.AddScoped<ILoanStatusRepository, LoanStatusRepository>();
+builder.Services.AddScoped<ILoanStatusService, LoanStatusService>();
+
+builder.Services.AddScoped<ILenderTypeLocalizationRepository, LenderTypeLocalizationRepository>();
+builder.Services.AddScoped<ILenderTypeLocalizationService, LenderTypeLocalizationService>();
 
 var app = builder.Build();
 

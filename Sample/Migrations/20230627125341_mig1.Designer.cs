@@ -12,8 +12,8 @@ using Repository.Concrete;
 namespace Sample.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230626091031_migration3")]
-    partial class migration3
+    [Migration("20230627125341_mig1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,9 +34,9 @@ namespace Sample.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CodiceSoggetoEnte")
+                    b.Property<string>("CodiceSoggetoEnte")
                         .HasMaxLength(50)
-                        .HasColumnType("int")
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("CodiceSoggetoEnte");
 
                     b.Property<DateTime>("DateCreated")
@@ -110,8 +110,11 @@ namespace Sample.Migrations
             modelBuilder.Entity("Domain.Entities.LenderTypeLocalization", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CultureId")
                         .HasColumnType("int")

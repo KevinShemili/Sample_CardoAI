@@ -107,8 +107,11 @@ namespace Sample.Migrations
             modelBuilder.Entity("Domain.Entities.LenderTypeLocalization", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CultureId")
                         .HasColumnType("int")

@@ -18,7 +18,7 @@ namespace Sample.Controllers {
         }
 
         [HttpGet]
-        public ActionResult<LenderTypeGetDTO> GetAllLenders() {
+        public ActionResult<LenderTypeGetDTO> GetAllLenderTypes() {
             try {
                 var lenderTypes = _lenderTypeService.GetAllLenderTypes();
                 return Ok(lenderTypes);
